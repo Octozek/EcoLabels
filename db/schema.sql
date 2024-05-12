@@ -1,11 +1,11 @@
 -- DROP DATABASE
-DROP DATABASE IF EXISTS ecommerce_db;
+DROP DATABASE IF EXISTS ECO_labs_db;
 
 -- CREATE DATABASE
-CREATE DATABASE ecommerce_db;
+CREATE DATABASE ECO_labs_db;
 
 -- USE the newly created database
-USE ecommerce_db;
+USE ECO_labs_db;
 
 -- CREATE TABLE categories
 CREATE TABLE categories (
@@ -19,7 +19,7 @@ CREATE TABLE animals (
     animal_species VARCHAR(100) NOT NULL,
     scientificName VARCHAR(100) NOT NULL,
     country VARCHAR(100) NOT NULL,
-    information_link VARCHAR(255) NOT NULL,  -- Added information_link
+    information_link VARCHAR(255) NOT NULL,
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
