@@ -1,44 +1,46 @@
 const router = require('express').Router();
-const { Animal, Category, Tag, AnimalnimalTag } = require('../../models');
+const { Animal, Category, Tag, AnimalTag } = require('../../models');
 
-// The `/api/Animal` endpoint
+// The `/api/animals` endpoint
 
-// get all Animal
+// Get all Animals
 router.get('/', async (req, res) => {
   try {
-    const animal = await nimal.findAll({
+    const animals = await Animal.findAll({
+      attributes: ['id', 'animal_species', 'scientificName', 'country', 'information_link'], // Include information_link
       include: [
         {
           model: Category,
-          attributes: ['id', 'category_name'],
+          attributes: [], // Exclude all category fields
         },
         {
           model: Tag,
-          attributes: ['id', 'tag_name'],
-          through: { attributes: [] }, // To exclude AnimalTag table attributes from response
+          attributes: [], // Exclude all tag fields
+          through: { attributes: [] }, // Exclude AnimalTag table attributes from response
         },
       ],
     });
-    res.json(animal);
+    res.json(animals);
   } catch (err) {
     console.error(err);
     res.status(500).json(err);
   }
 });
 
-// get one Animal
+// Get one Animal by ID
 router.get('/:id', async (req, res) => {
   try {
     const animal = await Animal.findByPk(req.params.id, {
+      attributes: ['id', 'animal_species', 'scientificName', 'country', 'information_link'], // Include information_link
       include: [
         {
           model: Category,
-          attributes: ['id', 'category_name'],
+          attributes: [], // Exclude all category fields
         },
         {
           model: Tag,
-          attributes: ['id', 'tag_name'],
-          through: { attributes: [] }, // To exclude AnimalTag table attributes from response
+          attributes: [], // Exclude all tag fields
+          through: { attributes: [] }, // Exclude AnimalTag table attributes from response
         },
       ],
     });
@@ -53,7 +55,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// create new product
+// Create new Animal
 router.post('/', async (req, res) => {
   try {
     const animal = await Animal.create(req.body);
@@ -64,7 +66,7 @@ router.post('/', async (req, res) => {
           tag_id,
         };
       });
-      await animalTag.bulkCreate(animalTagIdArr);
+      await AnimalTag.bulkCreate(animalTagIdArr);
     }
     res.status(200).json(animal);
   } catch (err) {
@@ -73,7 +75,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// update Animal
+// Update Animal by ID
 router.put('/:id', async (req, res) => {
   try {
     const animal = await Animal.update(req.body, {
@@ -98,6 +100,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// Delete Animal by ID
 router.delete('/:id', async (req, res) => {
   try {
     const animal = await Animal.destroy({

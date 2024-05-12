@@ -1,12 +1,8 @@
-// import important parts of sequelize library
 const { Model, DataTypes } = require('sequelize');
-// import our database connection from config.js
 const sequelize = require('../config/connection');
 
-// Initialize Animal model (table) by extending off Sequelize's Model class
 class Animal extends Model { }
 
-// set up fields and rules for Animal model
 Animal.init(
   {
     id: {
@@ -15,23 +11,23 @@ Animal.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    animal_name: {
+    animal_species: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
+    scientificName: {
+      type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isDecimal: true,
-      },
     },
-    stock: {
-      type: DataTypes.INTEGER,
+    country: {
+      type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 10,
+    },
+    information_link: {  // New field added
+      type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        isNumeric: true,
+        isUrl: true,  // Validate that it is a URL
       },
     },
     category_id: {
