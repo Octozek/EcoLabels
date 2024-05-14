@@ -1,5 +1,6 @@
 const express = require('express');
 const routes = require('./routes');
+const sequelize = require('./config/connection');
 const sequelize = require('./config/connection'); // Import the Sequelize connection
 
 const app = express();
@@ -18,3 +19,18 @@ sequelize.sync({ force: false }).then(() => {
     console.log(`Server running on port ${PORT}`);
   });
 });
+// Set up sessions with cookies
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {
+    // Stored in milliseconds
+    maxAge: 24 * 60 * 60 * 1000, // expires after 1 day
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize,
+  }),
+};
+
+app.use(session(sess));
