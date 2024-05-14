@@ -58,20 +58,17 @@ router.get('/:id', async (req, res) => {
 // Create new Animal
 router.post('/', async (req, res) => {
   try {
-    const animal = await Animal.create(req.body);
-    if (req.body.tagIds && req.body.tagIds.length) {
-      const animalTagIdArr = req.body.tagIds.map((tag_id) => {
-        return {
-          animal_id: animal.id,
-          tag_id,
-        };
-      });
-      await AnimalTag.bulkCreate(animalTagIdArr);
-    }
-    res.status(200).json(animal);
+      const animal = await Animal.create(req.body);
+      // Optionally handle related tags
+      if (req.body.tagIds && req.body.tagIds.length) {
+          const animalTagIdArr = req.body.tagIds.map(tag_id => ({ animal_id: animal.id, tag_id }));
+          await AnimalTag.bulkCreate(animalTagIdArr);
+      }
+      // Redirect or send success message
+      res.status(201).redirect('/api/animals');  // Redirecting to the list of animals, or to a success page
   } catch (err) {
-    console.error(err);
-    res.status(400).json(err);
+      console.error(err);
+      res.status(400).json({ error: err.message, message: "Error creating animal" });
   }
 });
 

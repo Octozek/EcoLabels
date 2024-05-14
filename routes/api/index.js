@@ -4,7 +4,7 @@ const AnimalRoutes = require('./animal-routes');
 const tagRoutes = require('./tag-routes');
 
 router.use('/categories', categoryRoutes);
-router.use('/Animal', AnimalRoutes);
+router.use('/animals', AnimalRoutes);
 router.use('/tags', tagRoutes);
 
 module.exports = router;
