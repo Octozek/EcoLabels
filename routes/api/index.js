@@ -3,6 +3,9 @@ const categoryRoutes = require('./category-routes');
 const animalRoutes = require('./animal-routes');
 const tagRoutes = require('./tag-routes');
 const generateSvgRoutes = require('./generate-svg');
+const loginRoutes = require('./login');
+const userRoutes = require('./user-routes');
+
 
 router.use('/categories', categoryRoutes);
 router.use('/animals', animalRoutes);
