@@ -36,8 +36,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+<<<<<<< HEAD
 // Use routes
 app.use(routes);
+=======
+app.use('/api', routes);
+>>>>>>> main
 
 // Sync Sequelize models to the database on server start
 sequelize.sync({ force: false }).then(() => {
@@ -48,17 +52,17 @@ sequelize.sync({ force: false }).then(() => {
 });
 
 // Set up sessions with cookies
-//const sess = {
-//   secret: 'Super secret secret',
-//   cookie: {
-//     // Stored in milliseconds
-//     maxAge: 24 * 60 * 60 * 1000, // expires after 1 day
-//   },
-//   resave: false,
-//   saveUninitialized: true,
-//   store: new SequelizeStore({
-//     db: sequelize,
-//   }),
-// };
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {
+    // Stored in milliseconds
+    maxAge: 24 * 60 * 60 * 1000, // expires after 1 day
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize,
+  }),
+};
 
-// app.use(session(sess));
+app.use(session(sess));
