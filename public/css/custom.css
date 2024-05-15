@@ -1,0 +1,44 @@
+/* Custom styles */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.modal-header {
+    background-color: #343a40;
+    color: white;
+}
+
+.modal-footer {
+    background-color: #f1f1f1;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+#petCard {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#petCard svg {
+    width: 100%;
+    height: auto;
+    border: 2px solid white;
+}

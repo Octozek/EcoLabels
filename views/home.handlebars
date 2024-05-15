@@ -1,0 +1,61 @@
+{{!-- Extends the main layout --}}
+{{!< main }}
+<div class="container mt-5">
+    <h1 class="text-center">Create Your Pet's ECO Label</h1>
+    <div class="text-center mt-4">
+        <!-- Button trigger card -->
+        <button type="button" class="btn btn-success" id="createCardBtn">
+            CREATE CARD!
+        </button>
+    </div>
+
+    <!-- Card container for the form -->
+    <div class="row justify-content-center mt-5" id="formCardContainer" style="display: none;">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pet Information</h5>
+                    <form id="petForm">
+                        <div class="form-group">
+                            <label for="petName">Pet's Name</label>
+                            <input type="text" class="form-control" id="petName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="petSpecies">Species</label>
+                            <select class="form-control" id="petSpecies" required>
+                                <!-- Options will be dynamically populated by the server -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="petDate">Date Acquired (MM/DD/YYYY)</label>
+                            <input type="text" class="form-control" id="petDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="petGender">Gender</label>
+                            <select class="form-control" id="petGender">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Generate Label</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card container for the generated label -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div id="petCard" class="card" style="display: none;">
+                <div class="card-body">
+                    <h5 id="cardPetName" class="card-title"></h5>
+                    <p id="cardPetSpecies" class="card-text"></p>
+                    <p id="cardPetDate" class="card-text"></p>
+                    <p id="cardPetGender" class="card-text"></p>
+                    <div id="cardQRCode" class="text-center mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
