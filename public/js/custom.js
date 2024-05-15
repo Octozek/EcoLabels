@@ -1,44 +1,54 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('createCardBtn').addEventListener('click', function() {
-        document.getElementById('formCardContainer').style.display = 'block';
-    });
-
-    fetch('/api/animals')
-        .then(response => response.json())
-        .then(data => {
-            const speciesSelect = document.getElementById('petSpecies');
-            data.forEach(animal => {
-                const option = document.createElement('option');
-                option.value = animal.id;
-                option.textContent = animal.animal_species;
-                speciesSelect.appendChild(option);
-            });
-        });
-
-    document.getElementById('petForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const petData = {
-            petName: document.getElementById('petName').value,
-            petSpecies: document.getElementById('petSpecies').value,
-            petDate: document.getElementById('petDate').value,
-            petGender: document.getElementById('petGender').value
-        };
-
-        fetch('/api/generate-svg', {
+document.addEventListener('DOMContentLoaded', () => {
+    const petForm = document.getElementById('petForm');
+  
+    petForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+  
+      const petName = document.getElementById('petName').value.trim();
+      const petSpecies = document.getElementById('petSpecies').value.trim();
+      const petDate = document.getElementById('petDate').value.trim();
+      const petGender = document.getElementById('petGender').value.trim();
+  
+      if (petName && petSpecies && petDate && petGender) {
+        try {
+          const response = await fetch('/api/generate-svg', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(petData)
-        })
-        .then(response => response.text())
-        .then(svg => {
-            document.getElementById('petCard').innerHTML = svg;
-            document.getElementById('petCard').style.display = 'block';
-            document.getElementById('formCardContainer').style.display = 'none';
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            body: JSON.stringify({
+              petName,
+              petSpecies,
+              petDate,
+              petGender,
+            }),
+          });
+  
+          if (response.ok) {
+            const svg = await response.text();
+            document.getElementById('svgContainer').innerHTML = svg;
+          } else {
+            alert('Failed to generate label');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Failed to generate label');
+        }
+      }
     });
-});
+  
+    // Populate the species dropdown
+    fetch('/api/animals/species')
+      .then(response => response.json())
+      .then(data => {
+        const petSpeciesSelect = document.getElementById('petSpecies');
+        data.forEach(animal => {
+          const option = document.createElement('option');
+          option.value = animal.id;
+          option.textContent = animal.animal_species;
+          petSpeciesSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  });
+  

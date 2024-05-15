@@ -27,6 +27,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get all animal species
+router.get('/species', async (req, res) => {
+  try {
+    const animals = await Animal.findAll({
+      attributes: ['id', 'animal_species']
+    });
+    res.json(animals);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
+
 // Get one Animal by ID
 router.get('/:id', async (req, res) => {
   try {
