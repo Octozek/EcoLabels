@@ -1,10 +1,12 @@
 const router = require('express').Router();
 const categoryRoutes = require('./category-routes');
-const AnimalRoutes = require('./animal-routes');
+const animalRoutes = require('./animal-routes');
 const tagRoutes = require('./tag-routes');
+const generateSvgRoutes = require('./generate-svg');
 
 router.use('/categories', categoryRoutes);
-router.use('/Animal', AnimalRoutes);
+router.use('/animals', animalRoutes);
 router.use('/tags', tagRoutes);
+router.use('/generate-svg', generateSvgRoutes);
 
 module.exports = router;
