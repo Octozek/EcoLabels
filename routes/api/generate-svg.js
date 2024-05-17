@@ -3,10 +3,10 @@ const QRCode = require('qrcode');
 const { Animal } = require('../../models');
 
 router.post('/', async (req, res) => {
-  const { petName, petSpecies, petDate, petGender } = req.body;
-
+  const { animalName, animal_species, animalDate, animalGender } = req.body;
+console.log(req.body)
   try {
-    const animal = await Animal.findByPk(petSpecies);
+    const animal = await Animal.findOne({where: {animal_species}});
 
     if (!animal) {
       return res.status(404).json({ message: 'Animal not found' });
@@ -21,11 +21,11 @@ router.post('/', async (req, res) => {
     const svg = `
       <svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
         <rect width="400" height="225" fill="black"/>
-        <text x="10" y="30" fill="white" font-size="36" font-family="Arial">${petName}</text> <!-- Increased font size for pet name -->
+        <text x="10" y="30" fill="white" font-size="36" font-family="Arial">${animalName}</text> <!-- Increased font size for pet name -->
         <text x="10" y="50" fill="white" font-size="18" font-family="Arial">${animal.animal_species}</text> <!-- Increased font size for animal species -->
         <text x="10" y="70" fill="white" font-size="16" font-family="Arial">${animal.scientificName}</text>
-        <text x="10" y="90" fill="white" font-size="16" font-family="Arial">Acq Date: ${petDate}</text>
-        <text x="10" y="110" fill="white" font-size="16" font-family="Arial">${petGender}</text>
+        <text x="10" y="90" fill="white" font-size="16" font-family="Arial">Acq Date: ${animalDate}</text>
+        <text x="10" y="110" fill="white" font-size="16" font-family="Arial">${animalGender}</text>
         <g transform="scale(0.3)">
           <g transform="translate(-60, 500)"> <!-- Adjusted vertical position and moved more left -->
             ${qrCodeSvg}

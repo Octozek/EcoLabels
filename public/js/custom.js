@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     labelForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const petName = document.getElementById('petName').value.trim();
-      const petSpecies = document.getElementById('petSpecies').value;
-      const petDate = document.getElementById('petDate').value.trim();
-      const petGender = document.getElementById('petGender').value;
+      const animalName = document.getElementById('petName').value.trim();
+      const animal_species = document.getElementById('petSpecies').value;
+      const animalDate = document.getElementById('petDate').value.trim();
+      const animalGender = document.getElementById('petGender').value;
 
-      if (petName && petSpecies && petDate && petGender) {
+      if (animalName && animal_species && animalDate && animalGender) {
         try {
           const response = await fetch('/api/generate-svg', {
             method: 'POST',
@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              petName,
-              petSpecies,
-              petDate,
-              petGender,
+              animalName,
+              animal_species,
+              animalDate,
+              animalGender,
             }),
           });
 
@@ -42,10 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Prompt user to register or sign in
             setTimeout(() => {
-              const proceed = confirm("To save this label, please register or sign in.");
-              if (proceed) {
+              showMessageModal("To save this label, please register or sign in.");
+              document.getElementById('messageModal').addEventListener('hidden.bs.modal', () => {
                 window.location.href = '/login';
-              }
+              });
+
             }, 1000);
           } else {
             alert('Failed to generate label');
@@ -70,5 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       })
       .catch(error => console.error('Error:', error));
+  }
+
+  function showMessageModal(message) {
+    document.getElementById('messageModalBody').innerText = message;
+    $('#messageModal').modal('show');
   }
 });
