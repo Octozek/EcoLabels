@@ -24,6 +24,12 @@ app.use(session({
   })
 }));
 
+app.use((req, res, next) => {
+  res.locals.logged_in = req.session.logged_in;
+  res.locals.isAdmin = req.session.isAdmin;
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));

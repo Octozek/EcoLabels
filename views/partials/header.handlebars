@@ -14,6 +14,13 @@
             <li class="nav-item">
               <a class="nav-link" href="/admin-add-animal">Add Animal</a>
             </li>
+          {{else}}
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <button id="theme-toggle" class="btn btn-link nav-link">Toggle Dark/Light Mode</button>
+            </li>
           {{/if}}
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
@@ -26,9 +33,6 @@
             <a class="nav-link" href="/register">Register</a>
           </li>
         {{/if}}
-        <li class="nav-item">
-          <button id="theme-toggle" class="btn btn-link nav-link">Dark/Light Mode</button>
-        </li>
       </ul>
     </div>
   </nav>
