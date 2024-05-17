@@ -1,0 +1,31 @@
+{{> header}}
+<div class="container my-5">
+  <h1>Admin Add Animal</h1>
+  <form id="addAnimalForm" action="/api/admin/animals" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="animalSpecies">Animal Species:</label>
+      <input type="text" class="form-control" id="animalSpecies" name="animal_species" required>
+    </div>
+    <div class="form-group">
+      <label for="scientificName">Scientific Name:</label>
+      <input type="text" class="form-control" id="scientificName" name="scientificName" required>
+    </div>
+    <div class="form-group">
+      <label for="informationLink">Information Link:</label>
+      <input type="url" class="form-control" id="informationLink" name="information_link" required>
+    </div>
+    <div class="form-group">
+      <label for="tagIds">Tags (Comma Separated):</label>
+      <input type="text" class="form-control" id="tagIds" name="tagIds">
+    </div>
+    <div class="form-group">
+      <label for="svgMap">SVG Map:</label>
+      <div id="drop-zone" class="drop-zone">
+        <p>Drag and drop your SVG file here or click to upload</p>
+        <input type="file" id="svgMap" name="svgMap" accept=".svg" class="form-control-file">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Animal</button>
+  </form>
+</div>
+

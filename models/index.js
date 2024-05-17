@@ -3,6 +3,7 @@ const Animal = require('./Animal');
 const Category = require('./Category');
 const Tag = require('./Tag');
 const AnimalTag = require('./AnimalTag');
+const User = require('./User');
 
 // Products belongsTo Category
 Animal.belongsTo(Category,{
@@ -29,4 +30,5 @@ module.exports = {
   Category,
   Tag,
   AnimalTag,
+  User
 };

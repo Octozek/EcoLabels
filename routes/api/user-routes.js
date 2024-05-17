@@ -1,19 +1,18 @@
-const router = require('express').Router();
-const { User } = require('../../models');
+const router = require("express").Router();
+const { User } = require("../../models");
+const bcrypt = require("bcrypt");
 
-// CREATE new user
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
+  console.log("User Creation", req.body);
   try {
-    const dbUserData = await User.create({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    });
-
+    console.log(req.body);
+    const userData = await User.create(req.body);
     req.session.save(() => {
-      req.session.loggedIn = true;
-
-      res.status(200).json(dbUserData);
+      req.session.user_id = userData.id;
+      req.session.logged_in = true;
+      req.session.isAdmin = userData.isAdmin; // Set isAdmin flag
+      console.log(userData);
+      res.status(200).json(userData);
     });
   } catch (err) {
     console.log(err);
@@ -21,51 +20,37 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Login
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
+  console.log("User Creation in login", req.body);
   try {
-    const dbUserData = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
+    const userData = await User.findOne({ where: { email: req.body.email } });
 
-    if (!dbUserData) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect email or password. Please try again!' });
+    if (!userData) {
+      res.status(400).json({ message: "No user with that email address!" });
       return;
     }
 
-    const validPassword = await dbUserData.checkPassword(req.body.password);
+    const validPassword = await userData.checkPassword(req.body.password);
 
     if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect email or password. Please try again!' });
+      res.status(400).json({ message: "Incorrect password!" });
       return;
     }
 
     req.session.save(() => {
-      req.session.loggedIn = true;
-      console.log(
-        'File: user-routes.js ~ line 57 ~ req.session.save ~ req.session.cookie',
-        req.session.cookie
-      );
-
-      res
-        .status(200)
-        .json({ user: dbUserData, message: 'You are now logged in!' });
+      req.session.user_id = userData.id;
+      req.session.logged_in = true;
+      req.session.isAdmin = userData.isAdmin; // Set isAdmin flag
+      res.json({ user: userData, message: "You are now logged in!" });
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
+    res.status(400).json(err);
   }
 });
 
-// Logout
-router.post('/logout', (req, res) => {
-  if (req.session.loggedIn) {
+// Logout a user
+router.post("/logout", (req, res) => {
+  if (req.session.logged_in) {
     req.session.destroy(() => {
       res.status(204).end();
     });
@@ -73,5 +58,17 @@ router.post('/logout', (req, res) => {
     res.status(404).end();
   }
 });
+
+function generateSvg(animal_species, scientificName, country, information_link) {
+  return `
+    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="lightgrey" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">
+        ${animal_species} - ${scientificName} - ${country} - ${information_link}
+      </text>
+    </svg>
+  `;
+}
+
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Animal extends Model { }
+class Animal extends Model {}
 
 Animal.init(
   {
@@ -9,32 +9,32 @@ Animal.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     animal_species: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     scientificName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
-    information_link: {  // New field added
+    information_link: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isUrl: true,  // Validate that it is a URL
-      },
+        isUrl: true
+      }
     },
     category_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'category',
+        model: 'Category',
         key: 'id'
       }
     }
@@ -44,7 +44,7 @@ Animal.init(
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'Animal',
+    modelName: 'Animal'
   }
 );
 
