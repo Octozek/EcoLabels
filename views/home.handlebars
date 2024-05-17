@@ -1,65 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECO Labels</title>
-  <link href="/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/css/custom.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-5">
-    <h1>Create Your Pet's ECO Label</h1>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#petLabelModal">
-      Create Label
-    </button>
-    <!-- Modal -->
-    <div class="modal fade" id="petLabelModal" tabindex="-1" role="dialog" aria-labelledby="petLabelModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="petLabelModalLabel">Pet Information</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="petForm">
-              <div class="form-group">
-                <label for="petName">Pet's Name</label>
-                <input type="text" class="form-control" id="petName" required>
-              </div>
-              <div class="form-group">
-                <label for="petSpecies">Species</label>
-                <select class="form-control" id="petSpecies" required>
-                  <!-- Options will be dynamically populated by the server -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="petDate">Date Acquired (MM/DD/YYYY)</label>
-                <input type="text" class="form-control" id="petDate" required>
-              </div>
-              <div class="form-group">
-                <label for="petGender">Gender</label>
-                <select class="form-control" id="petGender">
-                  <option>Male</option>
-                  <option>Female</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Generate Label</button>
-            </form>
-          </div>
+{{> header}}
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>EcoLabels Dashboard</h1>
+  </div>
+  <p>Welcome to the EcoLabels app. Manage and create educational plaques for animals and insects.</p>
+
+  <!-- Form for generating label -->
+  <div class="card my-4">
+    <div class="card-body">
+      <h2>Generate a Label</h2>
+      <form id="labelForm">
+        <div class="form-group">
+          <label for="petName">Pet Name:</label>
+          <input type="text" class="form-control" id="petName" name="petName" required>
         </div>
-      </div>
-    </div>
-    <div class="mt-5" id="svgContainer">
-      <!-- The generated SVG will be inserted here -->
+        <div class="form-group">
+          <label for="petSpecies">Pet Species:</label>
+          <select class="form-control" id="petSpecies" name="petSpecies" required>
+            <option value="" disabled selected>Select Species</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="petDate">Pet Date:</label>
+          <input type="date" class="form-control" id="petDate" name="petDate" required>
+        </div>
+        <div class="form-group">
+          <label for="petGender">Pet Gender:</label>
+          <select class="form-control" id="petGender" name="petGender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Label</button>
+      </form>
+      <div id="svgContainer" class="my-4"></div>
     </div>
   </div>
-
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/custom.js"></script>
-</body>
-</html>
+</div>

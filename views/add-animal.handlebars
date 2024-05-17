@@ -1,0 +1,61 @@
+{{> header}}
+<div class="container">
+  <h1>Add Animal</h1>
+  <form id="admin-add-animal-form" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="animal_species">Species:</label>
+      <input type="text" class="form-control" id="animal_species" name="animal_species" required>
+    </div>
+    <div class="form-group">
+      <label for="scientificName">Scientific Name:</label>
+      <input type="text" class="form-control" id="scientificName" name="scientificName" required>
+    </div>
+    <div class="form-group">
+      <label for="information_link">Link Wiki Page:</label>
+      <input type="url" class="form-control" id="information_link" name="information_link" required>
+    </div>
+    <div class="form-group">
+      <label for="map">SVG of Map:</label>
+      <div id="drop-zone" class="drop-zone">
+        <p>Choose a file or drag it here</p>
+        <input type="file" class="form-control-file" id="map" name="map" accept=".svg" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">ENTER</button>
+  </form>
+</div>
+
+
+<script>
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('map');
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    fileInput.files = e.dataTransfer.files;
+  });
+  fileInput.addEventListener('change', () => {
+    const fileName = fileInput.files[0].name;
+    dropZone.querySelector('p').textContent = fileName;
+  });
+</script>
+<style>
+  .drop-zone {
+    border: 2px dashed #007bff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .drop-zone.dragover {
+    border-color: #0056b3;
+    background-color: #e9ecef;
+  }
+</style>
+<script src="/js/admin-add-animal.js"></script>

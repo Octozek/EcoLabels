@@ -1,47 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>Login</h1>
-        <form class="login-form">
-            <div class="form-group">
-                <label for="email-login">Email</label>
-                <input type="email" id="email-login" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password-login">Password</label>
-                <input type="password" id="password-login" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-
-        <h1>Signup</h1>
-        <form class="signup-form">
-            <div class="form-group">
-                <label for="username-signup">Username</label>
-                <input type="text" id="username-signup" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="email-signup">Email</label>
-                <input type="email" id="email-signup" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password-signup">Password</label>
-                <input type="password" id="password-signup" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Signup</button>
-        </form>
+{{> header}}
+<div class="container">
+  <h1>Login</h1>
+  <form class="login-form">
+    <div class="form-group">
+      <label for="email-login">Email:</label>
+      <input type="email" class="form-control" id="email-login" name="email-login" required>
     </div>
+    <div class="form-group">
+      <label for="password-login">Password:</label>
+      <input type="password" class="form-control" id="password-login" name="password-login" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <p>Don't have an account? <a href="/register">Register</a></p>
+</div>
 
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/login.js"></script>
-</body>
-</html>
+
+<script src="/js/login.js"></script>
