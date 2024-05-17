@@ -1,11 +1,20 @@
 {{> header}}
 <div class="container my-5">
-  <h1>EcoLabels Dashboard</h1>
-  <p>Welcome to the EcoLabels app. Manage and create educational plaques for animals and insects.</p>
+  {{#if logged_in}}
+    {{#unless isAdmin}}
+      <h1>EcoLabels Dashboard</h1>
+      <p>Welcome to the EcoLabels app. Manage and create educational plaques for animals and insects.</p>
+    {{/unless}}
+  {{/if}}
 
   {{#if logged_in}}
     {{#if isAdmin}}
-      <a href="/admin-add-animal" class="btn btn-success btn-lg">Add New Animal</a>
+      <div class="card my-4">
+        <div class="card-body">
+          <h2>Admin Actions</h2>
+          <a href="/admin-add-animal" class="btn btn-success btn-lg">Add New Animal</a>
+        </div>
+      </div>
     {{else}}
       <div class="card my-4">
         <div class="card-body">

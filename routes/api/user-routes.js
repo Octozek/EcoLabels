@@ -48,4 +48,27 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Logout a user
+router.post("/logout", (req, res) => {
+  if (req.session.logged_in) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
+});
+
+function generateSvg(animal_species, scientificName, country, information_link) {
+  return `
+    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="lightgrey" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">
+        ${animal_species} - ${scientificName} - ${country} - ${information_link}
+      </text>
+    </svg>
+  `;
+}
+
+
 module.exports = router;

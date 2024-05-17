@@ -22,6 +22,16 @@ router.get('/admin-add-animal', (req, res) => {
     res.render('admin-add-animal');  // Renders admin-add-animal.handlebars
 });
 
+router.get('/profile', (req, res) => {
+    res.render('profile');  // Renders profile.handlebars
+});
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
+
 // Mount API routes
 router.use('/api', apiRoutes);
 
