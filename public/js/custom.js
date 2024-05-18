@@ -1,17 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleButton = document.getElementById('theme-toggle');
   const logoutButton = document.querySelector('#logout');
   const isLoggedIn = document.body.dataset.loggedIn === 'true'; // Check login status from a data attribute
-
-  if (toggleButton) {
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    document.body.classList.toggle('dark-mode', currentTheme === 'dark');
-
-    toggleButton.addEventListener('click', () => {
-      const isDarkMode = document.body.classList.toggle('dark-mode');
-      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    });
-  }
 
   const labelForm = document.getElementById('labelForm');
   if (labelForm) {

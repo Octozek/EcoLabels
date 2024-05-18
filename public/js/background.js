@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const plane = new THREE.Mesh(geometry, material);
   
       scene.add(plane);
-      camera.position.z = 5;
+      camera.position.z = 4;
   
       // Animate the plane for a dynamic effect
       function animate() {

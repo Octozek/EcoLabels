@@ -1,13 +1,14 @@
 /* Custom styles */
-/* Light mode (default) */
 body {
-  background-color: #ffffff;
-  color: #000000;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
-.navbar,
-.footer {
-  background-color: #f8f9fa;
-  color: #000000;
+
+/* Ensure modals and other elements are displayed over the background */
+.modal {
+  z-index: 1050; /* Bootstrap default z-index for modals */
+  position: relative;
 }
 
 .container {
@@ -50,54 +51,7 @@ body {
   border: 2px solid white;
 }
 
-.navbar,
-.footer {
-  background-color: #f8f9fa;
-  color: #000000;
-}
-
-/* Dark mode */
-body.dark-mode {
-  background-color: #343a40;
-  color: #ffffff;
-}
-
-.dark-mode .navbar,
-.dark-mode .footer {
-  background-color: #212529;
-  color: #ffffff;
-}
-
-.dark-mode .btn {
-  border: 1px solid #ffffff;
-}
-
-.dark-mode .btn-success {
-  background-color: #28a745;
-}
-
-.dark-mode .btn-info {
-  background-color: #17a2b8;
-}
-
-.dark-mode .btn-secondary {
-  background-color: #6c757d;
-}
-
-.dark-mode .nav-link {
-  color: #ffffff;
-}
-
-.dark-mode .dropdown-menu {
-  background-color: #212529;
-  color: #ffffff;
-}
-
-.dark-mode .dropdown-item {
-  color: #ffffff;
-}
-
-.dark-mode .dropdown-item:hover {
-  background-color: #343a40;
-  color: #ffffff;
+/* Additional custom styles */
+.navbar .footer {
+  background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent green background */
 }

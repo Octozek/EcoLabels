@@ -15,7 +15,7 @@ const animalData = [
     country: 'Brazil',
     information_link: 'https://en.wikipedia.org/wiki/Green_iguana',  // Updated link
     category_id: 2,
-    // country_svg_path: '/images/svg/brazil.svg',
+    country_svg_path: '/imgs/svg/Central_SouthAmerica-GreenIguana.svg',
   },
   {
     animal_species: 'American Alligator',
@@ -23,7 +23,7 @@ const animalData = [
     country: 'USA',
     information_link: 'https://en.wikipedia.org/wiki/American_alligator',  // Updated link
     category_id: 3,
-    // country_svg_path: '/images/svg/north-america.svg',
+    country_svg_path: '/imgs/svg/USA-AmericanAlligator.svg',
   },
   {
     animal_species: 'Poison Dart Frog',
@@ -31,7 +31,7 @@ const animalData = [
     country: 'Colombia',
     information_link: 'https://en.wikipedia.org/wiki/Poison_dart_frog',  // Updated link
     category_id: 4,
-    // country_svg_path: '/images/svg/colombia.svg',
+    country_svg_path: '/imgs/svg/Central_SouthAmerica-YellowBandedDartFrog.svg',
   },
   {
     animal_species: 'King Cobra',
@@ -39,7 +39,7 @@ const animalData = [
     country: 'India',
     information_link: 'https://en.wikipedia.org/wiki/King_cobra',  // Updated link
     category_id: 5,
-    // country_svg_path: '/images/svg/india.svg',
+    country_svg_path: '/imgs/svg/SoutheastAsia-KingCobra.svg',
   },
 ];
 
