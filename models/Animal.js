@@ -37,7 +37,11 @@ Animal.init(
         model: 'Category',
         key: 'id'
       }
-    }
+    },
+    country_svg_path: {
+      type: DataTypes.STRING, 
+      allowNull: true,
+    },
   },
   {
     sequelize,
