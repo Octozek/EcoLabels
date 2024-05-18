@@ -3,6 +3,7 @@ const QRCode = require('qrcode');
 const { Animal } = require('../../models');
 const fs = require('fs');
 const path = require('path');
+const { DOMParser } = require('xmldom');
 
 const uploadsDir = path.join(__dirname, '../../public/uploads');
 if (!fs.existsSync(uploadsDir)) {
@@ -27,7 +28,20 @@ router.post('/', async (req, res) => {
 
     // Read the country SVG file
     const countrySvgPath = path.join(__dirname, '../../public', animal.country_svg_path);
-    const countrySvg = fs.readFileSync(countrySvgPath, 'utf-8');
+    const countrySvgContent = fs.readFileSync(countrySvgPath, 'utf-8');
+
+    // Parse the country SVG to get its dimensions
+    const parser = new DOMParser();
+    const countrySvgDoc = parser.parseFromString(countrySvgContent, 'text/xml');
+    const countrySvgElement = countrySvgDoc.documentElement;
+
+    const countrySvgWidth = parseFloat(countrySvgElement.getAttribute('width')) || 200;
+    const countrySvgHeight = parseFloat(countrySvgElement.getAttribute('height')) || 200;
+
+    // Calculate the scaling factor to make the country SVG fit exactly half of the label (200x225)
+    const labelHalfWidth = 200;
+    const labelHeight = 225;
+    const scaleFactor = Math.min(labelHalfWidth / countrySvgWidth, labelHeight / countrySvgHeight);
 
     const svgContent = `
       <svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
@@ -46,8 +60,8 @@ router.post('/', async (req, res) => {
         <text x="85" y="180" fill="white" font-size="12" font-family="Arial">more detailed</text>
         <text x="85" y="195" fill="white" font-size="12" font-family="Arial">information about</text>
         <text x="85" y="210" fill="white" font-size="12" font-family="Arial">this species.</text>
-        <g transform="scale(0.5) translate(200, 0)">
-          ${countrySvg}
+        <g transform="translate(200, 0) scale(${scaleFactor})">
+          ${countrySvgElement.toString()}
         </g>
       </svg>
     `;
