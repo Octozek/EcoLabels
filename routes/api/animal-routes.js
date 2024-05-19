@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 router.get('/species', async (req, res) => {
   try {
     const animals = await Animal.findAll({
-      attributes: ['id', 'animal_species']
+      attributes: ['animal_species']
     });
     res.json(animals);
   } catch (err) {
