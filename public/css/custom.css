@@ -55,3 +55,17 @@ body {
 .navbar .footer {
   background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent green background */
 }
+
+.wiggle {
+  animation: wiggle 0.3s infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+

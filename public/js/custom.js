@@ -1,7 +1,76 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const logoutButton = document.querySelector('#logout');
-  const isLoggedIn = document.body.dataset.loggedIn === 'true';
+  let saveMode = false;
+  let saveTimeout;
 
+  // Function to make labels wiggle
+  function startWiggling() {
+    document.querySelectorAll('.generated-label').forEach(label => {
+      label.classList.add('wiggle');
+    });
+  }
+
+  // Function to stop labels from wiggling
+  function stopWiggling() {
+    document.querySelectorAll('.generated-label').forEach(label => {
+      label.classList.remove('wiggle');
+    });
+    saveMode = false;
+  }
+
+  // When Save Label button is clicked, make labels wiggle
+  document.getElementById('saveLabelButton').addEventListener('click', () => {
+    saveMode = true;
+    startWiggling();
+
+    // Set a timeout for 10 seconds to stop wiggling
+    saveTimeout = setTimeout(() => {
+      stopWiggling();
+    }, 10000); // 10 seconds
+  });
+
+  // When a label is clicked, if in save mode, show save options and stop wiggling
+  document.getElementById('svgContainer').addEventListener('click', (event) => {
+    if (saveMode && event.target.closest('.generated-label')) {
+      clearTimeout(saveTimeout);
+      const label = event.target.closest('.generated-label');
+      stopWiggling();
+      $('#saveLabelModal').modal('show');
+
+      document.getElementById('saveAsSvg').onclick = () => saveSvg(label);
+      document.getElementById('saveAsPng').onclick = () => savePng(label);
+    }
+  });
+
+  // Function to save label as SVG
+  function saveSvg(label) {
+    const svgContent = label.innerHTML;
+    const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'label.svg';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  // Function to save label as PNG
+  function savePng(label) {
+    const svgContent = label.innerHTML;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const v = canvg.Canvg.fromString(context, svgContent);
+    canvas.width = label.clientWidth;
+    canvas.height = label.clientHeight;
+    v.render();
+    canvas.toBlob((blob) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'label.png';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  }
+
+  // Existing code for generating labels, logout, etc.
   const labelForm = document.getElementById('labelForm');
   if (labelForm) {
     labelForm.addEventListener('submit', async (event) => {
@@ -29,8 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (response.ok) {
             const svgText = await response.text();
-            document.getElementById('svgContainer').innerHTML = svgText;
-            document.getElementById('saveLabelButton').style.display = 'block'; // Show save button
+            const svgContainer = document.getElementById('svgContainer');
+            const div = document.createElement('div');
+            div.classList.add('generated-label');
+            div.innerHTML = svgText;
+            svgContainer.appendChild(div);
           } else {
             showMessageModal('Failed to generate label');
           }
@@ -57,6 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => console.error('Error:', error));
   }
 
+  // Logout functionality
+  const logoutButton = document.querySelector('#logout');
   if (logoutButton) {
     logoutButton.addEventListener('click', async () => {
       const response = await fetch('/api/users/logout', {
@@ -77,65 +151,18 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#messageModal').modal('show');
   }
 
-  const saveLabelButton = document.getElementById('saveLabelButton');
-  if (saveLabelButton && !saveLabelButton.classList.contains('listener-added')) {
-    saveLabelButton.addEventListener('click', () => {
-      $('#saveLabelModal').modal('show');
-    });
-    saveLabelButton.classList.add('listener-added');
-  }
-
-  const saveAsSvgButton = document.getElementById('saveAsSvg');
-  if (saveAsSvgButton && !saveAsSvgButton.classList.contains('listener-added')) {
-    saveAsSvgButton.addEventListener('click', () => {
-      saveLabel('svg');
-    });
-    saveAsSvgButton.classList.add('listener-added');
-  }
-
-  const saveAsPngButton = document.getElementById('saveAsPng');
-  if (saveAsPngButton && !saveAsPngButton.classList.contains('listener-added')) {
-    saveAsPngButton.addEventListener('click', () => {
-      saveLabel('png');
-    });
-    saveAsPngButton.classList.add('listener-added');
-  }
-
-  function saveLabel(format) {
-    const svg = document.querySelector('#svgContainer svg');
-    const serializer = new XMLSerializer();
-    const svgBlob = new Blob([serializer.serializeToString(svg)], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(svgBlob);
-
-    if (format === 'svg') {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'label.svg';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } else if (format === 'png') {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        canvas.toBlob((blob) => {
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = 'label.png';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
+  // Fetch saved SVGs for profile
+  if (document.getElementById('savedSvgsContainer')) {
+    fetch('/api/users/saved-svgs')
+      .then(response => response.json())
+      .then(svgs => {
+        const container = document.getElementById('savedSvgsContainer');
+        svgs.forEach(svg => {
+          const div = document.createElement('div');
+          div.innerHTML = svg;
+          container.appendChild(div);
         });
-      };
-    }
-
-    $('#saveLabelModal').modal('hide');
+      })
+      .catch(error => console.error('Error fetching saved SVGs:', error));
   }
 });
