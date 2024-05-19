@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.querySelector('#logout');
-  const isLoggedIn = document.body.dataset.loggedIn === 'true'; // Check login status from a data attribute
+  const isLoggedIn = document.body.dataset.loggedIn === 'true';
 
   const labelForm = document.getElementById('labelForm');
   if (labelForm) {
@@ -30,16 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (response.ok) {
             const svgText = await response.text();
             document.getElementById('svgContainer').innerHTML = svgText;
-
-            // Show modal to register or sign in if not logged in
-            if (!isLoggedIn) {
-              setTimeout(() => {
-                showMessageModal("To save this label, please register or sign in.");
-                document.getElementById('messageModal').addEventListener('hidden.bs.modal', () => {
-                  window.location.href = '/login';
-                });
-              }, 1000);
-            }
+            document.getElementById('saveLabelButton').style.display = 'block'; // Show save button
           } else {
             showMessageModal('Failed to generate label');
           }
@@ -55,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(species => {
         const petSpeciesSelect = document.getElementById('petSpecies');
-        // Clear existing options
         petSpeciesSelect.innerHTML = '<option value="" disabled selected>Select Species</option>';
         species.forEach(animal => {
           const option = document.createElement('option');
@@ -87,55 +77,65 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#messageModal').modal('show');
   }
 
-  // Fetch saved SVGs for profile
-  if (document.getElementById('savedSvgsContainer')) {
-    fetch('/api/users/saved-svgs')
-      .then(response => response.json())
-      .then(svgs => {
-        const container = document.getElementById('savedSvgsContainer');
-        svgs.forEach(svg => {
-          const div = document.createElement('div');
-          div.innerHTML = svg;
-          container.appendChild(div);
-        });
-      })
-      .catch(error => console.error('Error fetching saved SVGs:', error));
+  const saveLabelButton = document.getElementById('saveLabelButton');
+  if (saveLabelButton && !saveLabelButton.classList.contains('listener-added')) {
+    saveLabelButton.addEventListener('click', () => {
+      $('#saveLabelModal').modal('show');
+    });
+    saveLabelButton.classList.add('listener-added');
   }
-  
-  // Drag and drop functionality for SVG map
-  const dropZone = document.getElementById('drop-zone');
-  const svgMapInput = document.getElementById('svgMap');
 
-  if (dropZone) {
-    dropZone.addEventListener('dragover', (event) => {
-      event.preventDefault();
-      dropZone.classList.add('dragging');
+  const saveAsSvgButton = document.getElementById('saveAsSvg');
+  if (saveAsSvgButton && !saveAsSvgButton.classList.contains('listener-added')) {
+    saveAsSvgButton.addEventListener('click', () => {
+      saveLabel('svg');
     });
+    saveAsSvgButton.classList.add('listener-added');
+  }
 
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('dragging');
+  const saveAsPngButton = document.getElementById('saveAsPng');
+  if (saveAsPngButton && !saveAsPngButton.classList.contains('listener-added')) {
+    saveAsPngButton.addEventListener('click', () => {
+      saveLabel('png');
     });
+    saveAsPngButton.classList.add('listener-added');
+  }
 
-    dropZone.addEventListener('drop', (event) => {
-      event.preventDefault();
-      dropZone.classList.remove('dragging');
-      const files = event.dataTransfer.files;
-      if (files.length > 0) {
-        svgMapInput.files = files;
-        dropZone.textContent = files[0].name;
-      }
-    });
+  function saveLabel(format) {
+    const svg = document.querySelector('#svgContainer svg');
+    const serializer = new XMLSerializer();
+    const svgBlob = new Blob([serializer.serializeToString(svg)], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(svgBlob);
 
-    dropZone.addEventListener('click', () => {
-      svgMapInput.click();
-    });
+    if (format === 'svg') {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'label.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } else if (format === 'png') {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'label.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+      };
+    }
 
-    svgMapInput.addEventListener('change', () => {
-      if (svgMapInput.files.length > 0) {
-        dropZone.textContent = svgMapInput.files[0].name;
-      } else {
-        dropZone.textContent = 'Drag and drop your SVG file here or click to upload';
-      }
-    });
+    $('#saveLabelModal').modal('hide');
   }
 });

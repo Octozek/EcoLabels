@@ -7,8 +7,7 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/custom.css">
 </head>
-<body class="d-flex flex-column min-vh-100" data-logged-in="{{logged_in}}">
-  {{> header}}
+<body class="d-flex flex-column min-vh-100" data-logged-in="{{#if logged_in}}true{{else}}false{{/if}}">
   {{{body}}}
   {{> footer}}
 
@@ -24,6 +23,27 @@
         </div>
         <div class="modal-body" id="messageModalBody">
           <!-- Message content will be inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Label Modal -->
+  <div class="modal fade" id="saveLabelModal" tabindex="-1" role="dialog" aria-labelledby="saveLabelModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveLabelModalLabel">Save Label As</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <button id="saveAsSvg" class="btn btn-primary">Save as SVG</button>
+          <button id="saveAsPng" class="btn btn-primary">Save as PNG</button>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
