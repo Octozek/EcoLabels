@@ -43,6 +43,10 @@ router.post('/', async (req, res) => {
     const labelHeight = 225;
     const scaleFactor = Math.min(labelHalfWidth / countrySvgWidth, labelHeight / countrySvgHeight);
 
+    // Center the map in the right half
+    const mapOffsetX = (labelHalfWidth - (countrySvgWidth * scaleFactor)) / 2;
+    const mapOffsetY = (labelHeight - (countrySvgHeight * scaleFactor)) / 2;
+
     const svgContent = `
       <svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
         <rect width="400" height="225" fill="black"/>
@@ -60,7 +64,7 @@ router.post('/', async (req, res) => {
         <text x="85" y="180" fill="white" font-size="12" font-family="Arial">more detailed</text>
         <text x="85" y="195" fill="white" font-size="12" font-family="Arial">information about</text>
         <text x="85" y="210" fill="white" font-size="12" font-family="Arial">this species.</text>
-        <g transform="translate(200, 0) scale(${scaleFactor})">
+        <g transform="translate(${200 + mapOffsetX}, ${mapOffsetY}) scale(${scaleFactor})">
           ${countrySvgElement.toString()}
         </g>
       </svg>
