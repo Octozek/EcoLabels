@@ -1,12 +1,27 @@
 const router = require('express').Router();
 const { Animal, AnimalTag } = require('../../models');
 const { withAdminAuth } = require('../../middleware/auth');
+const multer = require('multer');
+const path = require('path');
+
+// Configure multer for file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
 
 // Admin route to add a new animal
-router.post('/', withAdminAuth, async (req, res) => {
+router.post('/', withAdminAuth, upload.single('svg_map'), async (req, res) => {
   const { animal_species, scientificName, country, information_link, tagIds } = req.body;
+  const country_svg_path = req.file ? `/uploads/${req.file.filename}` : null;
   console.log('Request Body:', req.body);
-  if (!animal_species || !scientificName || !information_link) {
+
+  if (!animal_species || !scientificName || !information_link || !country_svg_path) {
     return res.status(400).json({ error: 'All fields are required', message: 'Error creating animal' });
   }
 
@@ -15,7 +30,8 @@ router.post('/', withAdminAuth, async (req, res) => {
       animal_species,
       scientificName,
       country,
-      information_link
+      information_link,
+      country_svg_path
     });
 
     if (tagIds && tagIds.length) {

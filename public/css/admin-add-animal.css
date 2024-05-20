@@ -1,0 +1,19 @@
+.drag-drop-area {
+  border: 2px dashed #007bff;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.drag-drop-area.dragover {
+  background-color: #e9ecef;
+}
+
+.file-name {
+  margin-top: 10px;
+  color: #007bff;
+  font-weight: bold;
+}
