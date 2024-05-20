@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
@@ -6,6 +7,8 @@ const path = require('path');
 const sequelize = require('./config/connection');
 const routes = require('./routes');
 const adminAnimalRoutes = require('./routes/api/admin-animal-routes');
+const animalRoutes = require('./routes/api/animal-routes');
+const userRoutes = require('./routes/api/user-routes'); 
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,6 +31,7 @@ app.use(session({
 app.use((req, res, next) => {
   res.locals.logged_in = req.session.logged_in;
   res.locals.isAdmin = req.session.isAdmin;
+  res.locals.user = req.session.user;
   next();
 });
 
@@ -37,6 +41,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 app.use('/api/admin/animals', adminAnimalRoutes);
+app.use('/api/animals', animalRoutes);
+app.use('/api/users', userRoutes);
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
