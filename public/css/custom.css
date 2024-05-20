@@ -56,16 +56,17 @@ body {
   background-color: rgba(76, 175, 80, 0.8); /* Semi-transparent green background */
 }
 
+.generated-label {
+  margin: 20px 0; /* Add space above and below each label */
+}
+
+
 .wiggle {
-  animation: wiggle 0.3s infinite;
+  animation: wiggle 0.8s infinite;
 }
 
 @keyframes wiggle {
-  0%, 100% {
-    transform: rotate(-5deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
 }
 
