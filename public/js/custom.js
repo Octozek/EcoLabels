@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // When Save Label button is clicked, make labels wiggle
-  document.getElementById('saveLabelButton').addEventListener('click', () => {
+  document.getElementById('downloadLabelButton').addEventListener('click', () => {
     saveMode = true;
     startWiggling();
 
@@ -54,20 +54,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to save label as PNG
   function savePng(label) {
-    const svgContent = label.innerHTML;
+    const svgElement = label.querySelector('svg');
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    const v = canvg.Canvg.fromString(context, svgContent);
-    canvas.width = label.clientWidth;
-    canvas.height = label.clientHeight;
-    v.render();
-    canvas.toBlob((blob) => {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'label.png';
-      link.click();
-      URL.revokeObjectURL(link.href);
-    });
+
+    const svgString = new XMLSerializer().serializeToString(svgElement);
+    const DOMURL = self.URL || self.webkitURL || self;
+    const img = new Image();
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const url = DOMURL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      context.drawImage(img, 0, 0);
+      DOMURL.revokeObjectURL(url);
+
+      canvas.toBlob((blob) => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'label.png';
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }, 'image/png');
+    };
+    img.src = url;
   }
 
   // Existing code for generating labels, logout, etc.
@@ -103,6 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
             div.classList.add('generated-label');
             div.innerHTML = svgText;
             svgContainer.appendChild(div);
+
+            // Show the Download Label button if user is logged in
+            if (document.body.getAttribute('data-logged-in') === 'true') {
+              document.getElementById('downloadLabelButton').style.display = 'block';
+            }
           } else {
             showMessageModal('Failed to generate label');
           }
