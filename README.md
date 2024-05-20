@@ -4,14 +4,28 @@ EcoLabels is a web application designed to generate educational labels for anima
 
 ## Table of Contents
 
-- [Features](#features)
-- [Technologies](#technologies)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Routes](#routes)
-- [Database Models](#database-models)
-- [License](#license)
-- [Contributing](#contributing)
+- [EcoLabels](#ecolabels)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Technologies](#technologies)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Routes](#routes)
+    - [API Routes](#api-routes)
+      - [User Routes:](#user-routes)
+      - [Animal Routes:](#animal-routes)
+      - [Admin Routes:](#admin-routes)
+      - [Label Routes:](#label-routes)
+    - [Views Routes](#views-routes)
+  - [Database Models](#database-models)
+    - [User](#user)
+    - [Animal](#animal)
+    - [Label](#label)
+    - [Category](#category)
+    - [Tag](#tag)
+    - [AnimalTag](#animaltag)
+  - [License](#license)
+  - [Contributing](#contributing)
 
 ## Features
 
@@ -33,6 +47,7 @@ EcoLabels is a web application designed to generate educational labels for anima
 - Canvg (SVG to Canvas rendering)
 - Express-session (session management)
 - Connect-session-sequelize (session store for Sequelize)
+-  Multer (middleware package)
 
 ## Installation
 
